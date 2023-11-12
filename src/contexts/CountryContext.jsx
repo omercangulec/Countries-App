@@ -56,7 +56,7 @@ function CountryProvider({ children }) {
   }
 
   function handleSetSearchKey(e) {
-    dispatch({ type: "searchKey/set", payload: e.target.value });
+    dispatch({ type: "searchKey/set", payload: e.target.value.toLowerCase() });
   }
 
   useEffect(function () {

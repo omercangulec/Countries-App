@@ -7,7 +7,7 @@ export function Search() {
       className="search"
       type="text"
       placeholder="Search Country..."
-      value={searchKey.toLowerCase()}
+      value={searchKey}
       onChange={handleSetSearchKey}
     />
   );
