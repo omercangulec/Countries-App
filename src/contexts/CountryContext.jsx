@@ -8,20 +8,23 @@ const initialState = {
   sortBy: "default",
   currentPage: 1,
   recordsPerPage: 12,
+  isLoading: false,
 };
 
 function reducer(state, action) {
   switch (action.type) {
+    case "countries/loading":
+      return { ...state, isLoading: true };
     case "countries/loaded":
-      return { ...state, countries: action.payload };
+      return { ...state, isLoading: false, countries: action.payload };
     case "searchKey/set":
-      return { ...state, searchKey: action.payload };
+      return { ...state, isLoading: false, searchKey: action.payload };
     case "sortBy/set":
-      return { ...state, sortBy: action.payload };
+      return { ...state, isLoading: false, sortBy: action.payload };
     case "currentPage/next":
-      return { ...state, currentPage: state.currentPage + 1 };
+      return { ...state, isLoading: false, currentPage: state.currentPage + 1 };
     case "currentPage/prev":
-      return { ...state, currentPage: state.currentPage - 1 };
+      return { ...state, isLoading: false, currentPage: state.currentPage - 1 };
 
     default:
       throw new Error("Unkown action");
@@ -30,7 +33,7 @@ function reducer(state, action) {
 
 function CountryProvider({ children }) {
   const [
-    { countries, searchKey, sortBy, currentPage, recordsPerPage },
+    { countries, searchKey, sortBy, currentPage, recordsPerPage, isLoading },
     dispatch,
   ] = useReducer(reducer, initialState);
 
@@ -61,6 +64,7 @@ function CountryProvider({ children }) {
 
   useEffect(function () {
     async function getCountry() {
+      dispatch({ type: "countries/loading" });
       try {
         const res = await fetch("https://restcountries.com/v3.1/all");
         if (!res.ok)
@@ -89,6 +93,7 @@ function CountryProvider({ children }) {
         sortedItems,
         handleSetSearchKey,
         dispatch,
+        isLoading,
       }}
     >
       {children}

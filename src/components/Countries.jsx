@@ -4,11 +4,15 @@ import Country from "./Country";
 function Countries() {
   const {
     isSearching,
+    isLoading,
     sortedItems,
     searchKey,
     indexOfFirstRecord,
     indexOfLastRecord,
   } = useCountry();
+
+  if (isLoading) return <div className="loader"></div>;
+
   return (
     <div className="boxes">
       {isSearching
